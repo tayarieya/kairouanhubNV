@@ -21,13 +21,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     await Future.delayed(const Duration(seconds: 2)); // Show splash for 2 seconds
     if (!mounted) return;
 
-    final token = await ref.read(authServiceProvider).getToken();
-    if (token != null) {
-      // Validate token if needed, for now just assume valid
-      if (mounted) context.go('/home');
-    } else {
-      if (mounted) context.go('/login');
-    }
+    // BYPASS AUTH: Directly go to home
+    context.go('/home');
   }
 
   @override

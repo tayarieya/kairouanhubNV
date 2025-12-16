@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'search_chatbot_page.dart';
-import 'discover_kairouan_page.dart';
-import 'food_destinations_page.dart';
-import 'user_account_page.dart';
+import '../features/home/home_tab.dart';
+import '../features/services/services_tab.dart';
+import '../features/search/search_tab.dart';
+import '../features/profile/profile_tab.dart';
 
 class MainPageView extends StatefulWidget {
   const MainPageView({super.key});
@@ -14,6 +13,7 @@ class MainPageView extends StatefulWidget {
 
 class _MainPageViewState extends State<MainPageView> {
   final PageController _pageController = PageController();
+  int _currentIndex = 0;
   
   @override
   void dispose() {
@@ -21,56 +21,81 @@ class _MainPageViewState extends State<MainPageView> {
     super.dispose();
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    _pageController.jumpToPage(index); // Use jumpToPage for instant switch
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // PageView with all 4 pages
-          PageView(
-            controller: _pageController,
-            children: const [
-              SearchChatbotPage(),
-              DiscoverKairouanPage(),
-              FoodDestinationsPage(),
-              UserAccountPage(),
-            ],
-          ),
-          
-          // Page Indicator at the bottom
-          Positioned(
-            bottom: 30,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: SmoothPageIndicator(
-                  controller: _pageController,
-                  count: 4,
-                  effect: WormEffect(
-                    dotColor: Colors.white.withOpacity(0.4),
-                    activeDotColor: Colors.white,
-                    dotHeight: 10,
-                    dotWidth: 10,
-                    spacing: 16,
-                  ),
-                ),
-              ),
+      backgroundColor: Colors.white,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          HomeTab(),
+          ServicesTab(),
+          SearchTab(),
+          ProfileTab(),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: NavigationBarTheme(
+          data: NavigationBarThemeData(
+            indicatorColor: const Color(0xFF6366F1).withOpacity(0.1),
+            labelTextStyle: MaterialStateProperty.all(
+              const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ),
-        ],
+          child: NavigationBar(
+            height: 70,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            selectedIndex: _currentIndex,
+            onDestinationSelected: _onItemTapped,
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined),
+                selectedIcon: Icon(Icons.home, color: Color(0xFF6366F1)),
+                label: 'Home',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.grid_view_outlined),
+                selectedIcon: Icon(Icons.grid_view, color: Color(0xFF6366F1)),
+                label: 'Services',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.search_outlined),
+                selectedIcon: Icon(Icons.search, color: Color(0xFF6366F1)),
+                label: 'Search',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                selectedIcon: Icon(Icons.person, color: Color(0xFF6366F1)),
+                label: 'Profile',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

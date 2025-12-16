@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/register_screen.dart';
-import '../features/home/service_details_screen.dart';
+import '../features/services/service_details_screen.dart';
 import '../features/requests/presentation/screens/requests_list_screen.dart';
 import '../features/requests/presentation/screens/create_request_screen.dart';
 import '../features/requests/presentation/screens/request_details_screen.dart';
@@ -38,8 +38,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'service/:id',
             builder: (context, state) {
-              final service = state.extra as Service;
-              return ServiceDetailsScreen(service: service);
+              return ServiceDetailsScreen(serviceId: state.pathParameters['id']!);
             },
           ),
           GoRoute(

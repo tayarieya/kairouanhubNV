@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 /// PAGE 1 — REDESIGNED: Explore Kairouan with Modern UI
 /// Features: Background image, Glassmorphism, Animations, Services, Food Banner, Places
@@ -53,7 +56,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 20),
+                  const Gap(20),
                   
                   // ========== HEADER WITH ICON + TITLE ==========
                   FadeTransition(
@@ -64,7 +67,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                     ),
                   ),
                   
-                  const SizedBox(height: 30),
+                  const Gap(30),
                   
                   // ========== SEARCH BAR + CHATBOT SECTION (GLASSMORPHISM) ==========
                   Padding(
@@ -75,7 +78,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                     ),
                   ),
                   
-                  const SizedBox(height: 40),
+                  const Gap(40),
                   
                   // ========== SERVICES OF THE SITE ==========
                   Padding(
@@ -83,7 +86,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                     child: _buildServicesSection(context),
                   ),
                   
-                  const SizedBox(height: 40),
+                  const Gap(40),
                   
                   // ========== FOOD ADVERTISING BANNER ==========
                   Padding(
@@ -91,12 +94,12 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                     child: _buildFoodBanner(context),
                   ),
                   
-                  const SizedBox(height: 40),
+                  const Gap(40),
                   
                   // ========== WONDERFUL PLACES IN KAIROUAN (Horizontal Scroll) ==========
                   _buildWonderfulPlacesSection(context),
                   
-                  const SizedBox(height: 100), // Space for page indicator
+                  const Gap(100), // Space for page indicator
                 ],
               ),
             ),
@@ -125,17 +128,19 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
       ),
       child: Stack(
         children: [
-          // Placeholder for "Jame3 Okba Ibn Nafaa" background image
-          Container(
-            decoration: BoxDecoration(
+          // Actual Image of Great Mosque
+          CachedNetworkImage(
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Great_Mosque_of_Kairouan_Tunisia.jpg",
+            height: 400,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Container(
               color: const Color(0xFF1565C0).withOpacity(0.3),
+              child: const Center(child: CircularProgressIndicator()),
             ),
-            child: Center(
-              child: Icon(
-                Icons.mosque,
-                size: 150,
-                color: Colors.white.withOpacity(0.2),
-              ),
+            errorWidget: (context, url, error) => Container(
+               color: const Color(0xFF1565C0).withOpacity(0.3),
+               child: const Center(child: Icon(Icons.mosque, size: 80, color: Colors.white24)),
             ),
           ),
           // Gradient overlay for readability
@@ -193,7 +198,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
               ),
               child: const Icon(Icons.explore, color: Colors.white, size: 28),
             ),
-            const SizedBox(width: 16),
+            const Gap(16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +210,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                       color: const Color(0xFF1A237E),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const Gap(4),
                   Text(
                     'Discover the sacred city',
                     style: TextStyle(
@@ -273,7 +278,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                 ),
               ),
               
-              const SizedBox(height: 20),
+              const Gap(20),
               
               // Chatbot Widget
               Container(
@@ -296,16 +301,21 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                 ),
                 child: Row(
                   children: [
-                    // AI Avatar
+                    // AI Avatar with Lottie Animation
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      height: 50,
+                      width: 50,
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.psychology, color: Colors.white, size: 28),
+                      // Using a network Lottie for demonstration. In production, use local assets.
+                      child: Lottie.network(
+                        'https://assets2.lottiefiles.com/packages/lf20_M9p23l.json', 
+                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.psychology, color: Colors.white, size: 28),
+                      ),
                     ),
-                    const SizedBox(width: 14),
+                    const Gap(14),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,7 +328,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                               fontSize: 16,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const Gap(4),
                           Text(
                             'Ask me anything about Kairouan',
                             style: TextStyle(
@@ -359,7 +369,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
             color: const Color(0xFF1A237E),
           ),
         ),
-        const SizedBox(height: 20),
+        const Gap(20),
         
         // Services Grid
         GridView.count(
@@ -433,7 +443,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(icon, color: Colors.white, size: 36),
-                const SizedBox(height: 10),
+                const Gap(10),
                 Text(
                   label,
                   style: const TextStyle(
@@ -456,9 +466,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFFF6B6B), Color(0xFFFFD93D)],
-        ),
+        color: Colors.orange, // Fallback color
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
@@ -470,20 +478,17 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
       ),
       child: Stack(
         children: [
-          // Placeholder for food image
+          // Food Image
           Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: Container(
-                color: Colors.black.withOpacity(0.2),
-                child: Icon(
-                  Icons.fastfood,
-                  size: 80,
-                  color: Colors.white.withOpacity(0.3),
-                ),
-              ),
-            ),
+             child: ClipRRect(
+               borderRadius: BorderRadius.circular(25),
+               child: CachedNetworkImage(
+                 imageUrl: "https://www.willflyforfood.net/wp-content/uploads/2019/06/tunisian-food-couscous.jpg",
+                 fit: BoxFit.cover,
+               ),
+             ),
           ),
+          
           // Gradient overlay
           Container(
             decoration: BoxDecoration(
@@ -513,7 +518,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const Gap(8),
                 Text(
                   'Explore authentic local cuisine',
                   style: TextStyle(
@@ -521,7 +526,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const Gap(16),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.restaurant_menu),
@@ -554,7 +559,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
           child: Row(
             children: [
               Icon(Icons.place, color: Colors.blue[700], size: 28),
-              const SizedBox(width: 8),
+              const Gap(8),
               Text(
                 'Wonderful Places in Kairouan',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -565,7 +570,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const Gap(16),
         SizedBox(
           height: 250,
           child: ListView(
@@ -654,7 +659,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                   ),
                   child: const Icon(Icons.location_city, color: Colors.white, size: 28),
                 ),
-                const SizedBox(height: 12),
+                const Gap(12),
                 Text(
                   title,
                   style: const TextStyle(
@@ -663,7 +668,7 @@ class _SearchChatbotPageState extends State<SearchChatbotPage> with SingleTicker
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 6),
+                const Gap(6),
                 Text(
                   subtitle,
                   style: TextStyle(
