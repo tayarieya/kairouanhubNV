@@ -1,15 +1,21 @@
-# mobile_app
+# KairouanHub Mobile App
 
-A new Flutter project.
+The official mobile application for KairouanHub. This app connects you to the best services, hidden gems, and historical places in Kairouan.
+
+## Features
+
+- **Service Directory**: Find local services easily.
+- **Explore Kairouan**: Discover wonderful and hidden places.
+- **Interactive Search**: Use the integrated chatbot for smart queries.
+- **Local Guide**: Your pocket guide to the city of Kairouan.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To get started with development:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1.  **Prerequisites**: Ensure you have Flutter installed.
+2.  **Dependencies**: Run `flutter pub get` to install packages.
+3.  **Run**: Use `flutter run` to start the app on your emulator or device.
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,

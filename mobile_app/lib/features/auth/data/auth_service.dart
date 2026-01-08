@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../core/api_client.dart';
+import '../../../models/user_model.dart';
 
 final authServiceProvider = Provider((ref) {
   final apiClient = ref.watch(apiClientProvider);
@@ -26,8 +27,9 @@ class AuthService {
       // Assuming the API returns { "token": "..." } or { "data": { "token": "..." } }
       // Based on standard Sanctum, it usually returns the token directly or in a wrapper.
       // I'll assume it returns 'token' or 'access_token'.
-      final data = response.data;
-      final token = data['token'] ?? data['access_token'];
+      final responseBody = response.data;
+      final data = responseBody['data'];
+      final token = data['token'];
       
       if (token != null) {
         await _storage.write(key: 'auth_token', value: token);
@@ -50,8 +52,9 @@ class AuthService {
         'device_name': 'mobile_app',
       });
       
-      final data = response.data;
-      final token = data['token'] ?? data['access_token'];
+      final responseBody = response.data;
+      final data = responseBody['data'];
+      final token = data['token'];
       
       if (token != null) {
         await _storage.write(key: 'auth_token', value: token);
@@ -77,5 +80,17 @@ class AuthService {
   
   Future<String?> getToken() async {
     return await _storage.read(key: 'auth_token');
+  }
+
+  Future<UserModel?> getUser() async {
+    try {
+      final response = await _dio.get('/me');
+      if (response.data['status'] == 'success') {
+        return UserModel.fromJson(response.data['data']);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 }

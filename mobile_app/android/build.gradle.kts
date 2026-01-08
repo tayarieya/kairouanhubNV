@@ -5,10 +5,15 @@ allprojects {
     }
 }
 
-rootProject.layout.buildDirectory = rootProject.layout.buildDirectory.dir("../build")
+val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
+rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
-    project.layout.buildDirectory = rootProject.layout.buildDirectory.get().dir(project.name)
+    project.layout.buildDirectory.value(rootProject.layout.buildDirectory.dir(project.name))
+}
+
+subprojects {
+    project.evaluationDependsOn(":app")
 }
 
 tasks.register<Delete>("clean") {
